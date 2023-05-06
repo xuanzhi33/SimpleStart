@@ -5,93 +5,378 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XUANZHI Go</title>
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="./x-az.css" rel="stylesheet">
-  <!-- 百度统计 -->
-  <script>
-    var _hmt = _hmt || [];
-    (function () {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?ba6b4d0838e6ed33eecb89050453babb";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-</head>
-<body>
-  <br>
-  <br>
-  <div class="container">
-    <div class="card glass"> <br>
-      <div class="container">
-        <div>
-          <div class="input-group mb-3 input-group-lg">
-            <input class="form-control" id="in2" placeholder="请输入搜索内容">
-          </div>
-          <div class="text-center"><button onClick="baidu()" class="btn btn-success">百度搜索（Enter）</button></div><br>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="card glass"> <br>
-      <div class="container">
-        <div>
-          <div class="input-group mb-3 input-group-lg">
-            <input class="form-control" id="in3" placeholder="请输入网址或网站代号(如：“bd”代表百度)">
-          </div>
-          <div class="text-center"><button onClick="go2()" class="btn btn-success">直接访问（Enter）</button></div>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#e9f1e9">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>简单起始页</title>
+    <!-- Bootstrap -->
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://www.xuanzhi33.cn/css/x-az.css" rel="stylesheet">
     
-        </div>
-      </div>
-      <br>
+
+    <style>
+        #toolSearch {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            z-index: 999;
+            width: 100%;
+            background-color: #e9f1e9aa;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.5s;
+
+            background-image: url('../css/search.svg');
+            background-repeat: no-repeat;
+            background-size: 45px;
+            background-position: 7px 13px;
+            overflow: hidden;
+
+        }
+
+        #searchInput {
+            outline: none;
+            border: none;
+            background: none;
+            width: 100%;
+            padding-left: 60px;
+            font-size: 24px;
+            color: #212529;
+        }
+
+
+
+        .resItem,
+        .fastlink,
+        #searchTips {
+            font-size: x-large;
+            font-weight: 300;
+        }
+
+        .fastlink {
+            word-break: keep-all;
+        }
+
+        .firstItem {
+            font-weight: 500;
+        }
+
+        .firstItem::before {
+            content: url('../css/back.svg');
+            display: inline-block;
+            transform: rotate(180deg) translate(2px, 7px);
+        }
+
+        #edit {
+            display: none;
+        }
+
+        .glass {
+            transition: none;
+        }
+
+        .searchBadge {
+            font-size: 15px;
+            display: inline-block;
+            transform: translateY(-3px);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #toolSearch {
+                background-color: #202420aa;
+                background-image: url('../css/search_dark.svg');
+            }
+
+            .firstItem::before {
+                content: url('../css/back_dark.svg');
+            }
+
+            #searchInput {
+                color: white;
+            }
+        }
+    </style>
+    <!-- 百度统计 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2a6aca6b85659d07cf5d9e5417c4a5f5";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+
+<body>
+    <div id="toolSearch">
+        <input autofocus type="text" id="searchInput" class="pt-3 pb-3" placeholder="搜索或输入网址">
     </div>
     <br>
-    <div class="card glass"> <br>
-      <div class="container">
-        <div>
-          <h4 class="text-center">常用网站</h4>
-          <div class="text-center"><a class="btn btn-success" href="http://go.x-az.top/bd">百度搜索</a> <a class="btn btn-success" href="http://go.x-az.top/bl">哔哩哔哩</a> <a class="btn btn-success" href="http://x-az.top/?go=self">x-az.top</a></div>
-          <p class="text-center">Create by xuanzhi33, 交换链接联系QQ:1796020342</p>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="card glass">
+            <div class="container mt-2 mb-2">
+                <div class="text-muted text-center" id="searchTips">请在上方输入搜索关键词或者网址</div>
+                <div id="searchResult">
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <br>
-  <br>
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
-  <script>
-    function go2() {
-      location.href = "http://x-az.top/?go=" + document.getElementById("in3").value;
-    }
-    function baidu() {
-      location.href = "https://www.baidu.com/s?wd=" + encodeURI(document.getElementById("in2").value);
-    }
-      $("#in2").bind("keydown", function (e) {
-        // 兼容FF和IE和Opera    
-        var theEvent = e || window.event;
-        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
-        if (code == 13) {
-          baidu();
-        }
-      });
-      $("#in3").bind("keydown", function (e) {
-        // 兼容FF和IE和Opera    
-        var theEvent = e || window.event;
-        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
-        if (code == 13) {
-          go2();
-        }
-      });
-  </script>
+        <div class="card glass mt-4" id="fast">
+            <div class="container mt-3 mb-3">
+                <h3 class="text-center">快速链接</h3>
+                <div class="text-center" id="fastAdd"></div>
+                <div class="text-center">
+                    <span id="fastgo"></span>
+                    <a href='javascript:editFastgo();'>编辑</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card glass mt-4" id="edit"> <br>
+            <div class="container">
+                <h3 class="text-center">编辑快速链接</h3>
+                <p>说明：可以在下方编辑快速链接，编辑完后请点击保存按钮。<br>
+                    格式为：[网站名] 空格 [网站链接]，每行一个。<br>
+                    注意：网站链接需带有“https://”前缀。<br>
+                </p>
+                <textarea id="linkEdit" class="form-control" rows="10"
+                    placeholder="例如：百度 https://www.baidu.com"></textarea>
+                <button class="btn btn-success btn-block mt-2" id="saveLinks">保存</button>
+            </div> <br>
+
+        </div>
+
+        <br>
+        <br>
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+        <script src="https://www.xuanzhi33.cn/js/global.js?v=1"></script>
+        <script>
+            if (!localStorage.x_fastgo) {
+                localStorage.x_fastgo = `[{"title":"xuanzhi33的小站","url":"https://www.xuanzhi33.cn"},{"title":"百度搜索","url":"https://www.baidu.com"},{"title":"哔哩哔哩","url":"https://www.bilibili.com"},{"title":"简单工具","url":"https://www.xuanzhi33.cn/tools/"},{"title":"简单游戏","url":"https://www.xuanzhi33.cn/game/"},{"title":"开往","url":"https://www.travellings.cn/go.html"}]`;
+            }
+
+            function addHttps(url) {
+                //如果没有“://”则添加
+                if (url.indexOf("://") == -1) {
+                    url = "https://" + url;
+                }
+                return url;
+            }
+
+            function isUrl(text) {
+                var regStr = "^((https|http|ftp|rtsp|mms)?://)"  //https、http、ftp、rtsp、mms
+                    + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+                    + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL- 例如：199.194.52.184
+                    + "|" // 允许IP和DOMAIN（域名）
+                    + "([0-9a-z_!~*'()-]+\\.)*" // 域名- www.
+                    + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
+                    + "[a-z]{2,6})" // first level domain- .com or .museum
+                    + "(:[0-9]{1,5})?" // 端口号最大为65535,5位数
+                    + "((/?)|" // a slash isn't required if there is no file name
+                    + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+
+                return new RegExp(regStr).test(text);
+            }
+
+
+            function showFastgo() {
+                var links = JSON.parse(localStorage.x_fastgo);
+                var html = "";
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    html += `<a class="fastlink" href="${link.url}">${link.title}</a> &nbsp; `;
+                }
+
+                $("#fastgo").html(html);
+            }
+            showFastgo();
+
+            function editFastgo() {
+                var linkText = "";
+                var links = JSON.parse(localStorage.x_fastgo);
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    linkText += `${link.title} ${link.url}\n`;
+                }
+                $("#linkEdit").val(linkText);
+
+                $("#edit").slideDown();
+                $("#fast").slideUp();
+            }
+
+            $("#saveLinks").click(function () {
+                var text = $("#linkEdit").val();
+                var lines = text.split("\n");
+                var links = [];
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    var title = line.split(" ")[0];
+                    var url = line.split(" ")[1];
+                    if (title && url) {
+                        links.push({
+                            title: title,
+                            url: url
+                        });
+                    }
+                }
+                localStorage.x_fastgo = JSON.stringify(links);
+                showFastgo();
+                $("#edit").slideUp();
+                $("#fast").slideDown();
+            });
+
+            function addGoto(text, resData) {
+                var text_url = addHttps(text);
+                resData.push({
+                    title: text_url + " <span class='searchBadge badge badge-secondary'>直接访问</span>",
+                    url: text_url
+                });
+            }
+
+
+            var siteInfoTimeout = null;
+            function showRes(res) {
+                if (res.length == 0) {
+                    return;
+                }
+                var html = '<a class="resItem firstItem" href="' + res[0].url + '">' + res[0].title + '</a><br>';
+
+                for (var i = 1; i < res.length; i++) {
+                    html += '<a class="resItem" href="' + res[i].url + '">' + res[i].title + '</a><br>';
+                }
+                $("#searchResult").html(html);
+            }
+
+            $("#searchInput").on("input", function () {
+                clearTimeout(siteInfoTimeout);
+                var text = $("#searchInput").val();
+                if (text == "") {
+                    $("#searchTips").show();
+                    $("#searchResult").html("");
+                    return;
+                }
+
+                var resData = [];
+                var fastgoRes = searchInFastgo(text);
+
+                if (!isUrl(text)) {
+                    textEncoded = encodeURIComponent(text);
+                    resData.push({
+                        title: text + " <span class='searchBadge badge badge-success'>百度搜索</span>",
+                        url: "https://www.baidu.com/s?wd=" + textEncoded
+                    });
+
+                    resData = resData.concat(fastgoRes);
+
+                    $.getJSON("https://suggestion.baidu.com/su?wd=" + textEncoded + "&cb=?", function (data) {
+                        if ($("#searchInput").val() != text) {
+                            return;
+                        }
+
+                        for (var i = 0; i < data.s.length; i++) {
+                            resData.push({
+                                title: data.s[i],
+                                url: "https://www.baidu.com/s?wd=" + data.s[i]
+                            });
+                        }
+                        if (text.indexOf(".") != -1) {
+                            addGoto(text, resData);
+                        }
+                        $("#searchTips").hide();
+                        showRes(resData);
+                    })
+
+                } else {
+                    $("#searchTips").hide();
+
+                    addGoto(text, resData);
+
+                    resData = resData.concat(fastgoRes);
+                    showRes(resData);
+
+                    siteInfoTimeout = setTimeout(() => {
+                        $.getJSON("https://api.vore.top/api/website?site=" + text, function (data) {
+                            data = data.data;
+                            var iconUrl = data.icon;
+                            var sitename = data.name || text;
+
+                            if ($("#searchInput").val() != text) {
+                                return;
+                            }
+                            $(".firstItem").html(`
+                            <img src="${iconUrl}" width="32px">
+                            ${sitename}
+                            <span class='searchBadge badge badge-secondary'>直接访问</span>`);
+
+                            $("#fastAdd").html(`<a href="javascript:addFastgo('${text}', '${sitename}')">将“${sitename}”添加到快速链接</a>`);
+
+                        })
+                    }, 200);
+                }
+            })
+
+            function addFastgo(url, title) {
+                var links = JSON.parse(localStorage.x_fastgo);
+                links.push({
+                    title: title,
+                    url: addHttps(url)
+                });
+                localStorage.x_fastgo = JSON.stringify(links);
+                showFastgo();
+
+                $("#fastAdd").html("");
+            }
+
+            function searchInFastgo(keyword) {
+                var res = [];
+                var links = JSON.parse(localStorage.x_fastgo);
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    if (link.title.indexOf(keyword) != -1 || link.url.indexOf(keyword) != -1) {
+                        link.title += " <span class='searchBadge badge badge-secondary'>快速链接</span>";
+                        res.push(link);
+                    }
+                }
+                return res;
+            }
+
+
+            $("#searchInput").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    var firsturl = $(".firstItem").attr("href");
+                    location.href = firsturl;
+                } else if (event.keyCode == 38 || event.keyCode == 40) {
+                    var firstItem = $(".firstItem");
+                    var resItems = $(".resItem");
+                    var index = resItems.index(firstItem);
+                    if (event.keyCode == 38) {
+                        index--;
+                    } else {
+                        index++;
+                    }
+                    if (index < 0) {
+                        index = resItems.length - 1;
+                    } else if (index >= resItems.length) {
+                        index = 0;
+                    }
+                    firstItem.removeClass("firstItem");
+                    resItems.eq(index).addClass("firstItem");
+
+                    return false;
+                }
+            });
+
+        </script>
 </body>
 
 </html>
